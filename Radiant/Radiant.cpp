@@ -32,9 +32,11 @@ void Startup()
     
     //We sleep for a while here because we don't want to inject right at game startup
     Sleep(5000);
-    Utils::Inject(dllName, procId);
 
-    Logging::Info("Injecting complete!");
+    if (Utils::Inject(dllName, procId)) Logging::Info("Injecting complete");
+    else Logging::Error("Injection failed");
+
+    
     
 }
 

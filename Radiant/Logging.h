@@ -11,5 +11,10 @@ public:
     {
         std::cout << str << std::endl;
     }
+
+    static void Error(std::string str)
+    {
+        std::cout << str << std::endl;
+    }
     
 };
