@@ -164,6 +164,8 @@
     <ClCompile Include="MinHook\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="Memory.h" />
     <ClInclude Include="MinHook.h" />
     <ClInclude Include="MinHook\buffer.h" />
     <ClInclude Include="MinHook\hde\hde32.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="MinHook\hde\table32.h" />
     <ClInclude Include="MinHook\hde\table64.h" />
     <ClInclude Include="MinHook\trampoline.h" />
+    <ClInclude Include="Patterns.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SDK\SDK.vcxproj">

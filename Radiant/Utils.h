@@ -9,7 +9,7 @@ namespace Utils
     size_t cSize = 260;
     std::wstring wc( cSize, L'#' );
     
-    DWORD GetProcId(const wchar_t* procName)
+    DWORD GetProcId()
     {
         DWORD procId = 0;
         //Captures all running processes
@@ -24,7 +24,7 @@ namespace Utils
             {
                 do
                 {
-                    if (!_wcsicmp(procEntry.szExeFile, procName))
+                    if (!_wcsicmp(procEntry.szExeFile, L"IntoTheRadius-Win64-Shipping.exe"))
                     {
                         procId = procEntry.th32ProcessID;
                         break;
@@ -47,7 +47,7 @@ namespace Utils
     }
     
 
-    bool Inject(const char* dllName, DWORD procId)
+    bool Inject(DWORD procId)
     {
         HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, 0, procId);
 
@@ -56,7 +56,7 @@ namespace Utils
             //Allocate memory in game process
             void* loc = VirtualAllocEx(hProc, 0, MAX_PATH, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-            const char* dllCombined = (_GetCurrentDirectory() + "\\" + std::string(dllName)).c_str();
+            const char* dllCombined = (_GetCurrentDirectory() + "\\Radiant-Core.dll").c_str();
         
             //Write the path to our dll to the memory reserved in the game process
             if (loc)
@@ -67,7 +67,7 @@ namespace Utils
                 return false;
             }
             
-            //Start a thread to our dll
+            //Start a thread to our dll (Radiant-Core)
             HANDLE hThread = CreateRemoteThread(hProc, 0, 0, (LPTHREAD_START_ROUTINE)LoadLibraryA, loc, 0, 0);
 
             //Cleanup

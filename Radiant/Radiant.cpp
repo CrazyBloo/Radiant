@@ -4,15 +4,7 @@
 #include "Logging.h"
 #include "Utils.h"
 
-#pragma region Injection Vars
-
-const char* dllName = "Radiant-Core.dll";
-const wchar_t* procName = L"IntoTheRadius-Win64-Shipping.exe";
 DWORD procId = 0;
-
-#pragma endregion 
-
-
 void Startup()
 {
     
@@ -21,11 +13,11 @@ void Startup()
     Logging::Info("Radiant, a mod loader for Into the Radius");
     Logging::Info("Searching for game process... (Open your game)");
 
-    //Search for game process at intervals of 50ms
+    //Search for game process at intervals of 100ms
     while (procId == 0)
     {
-        procId = Utils::GetProcId(procName);
-        Sleep(50);
+        procId = Utils::GetProcId();
+        Sleep(100);
     }
 
     Logging::Info("Found Game! Injecting...");
@@ -33,10 +25,8 @@ void Startup()
     //We sleep for a while here because we don't want to inject right at game startup
     Sleep(5000);
 
-    if (Utils::Inject(dllName, procId)) Logging::Info("Injecting complete");
+    if (Utils::Inject(procId)) Logging::Info("Injecting complete");
     else Logging::Error("Injection failed");
-
-    
     
 }
 
