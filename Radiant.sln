@@ -4,6 +4,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Radiant", "Radiant\Radiant.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Radiant-Core", "Radiant-Core\Radiant-Core.vcxproj", "{024E9434-812B-4F22-B919-B883C2B39317}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDK", "SDK\SDK.vcxproj", "{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,5 +30,13 @@ Global
 		{024E9434-812B-4F22-B919-B883C2B39317}.Release|Win32.Build.0 = Release|Win32
 		{024E9434-812B-4F22-B919-B883C2B39317}.Release|x64.ActiveCfg = Release|x64
 		{024E9434-812B-4F22-B919-B883C2B39317}.Release|x64.Build.0 = Release|x64
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Debug|Win32.Build.0 = Debug|Win32
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Debug|x64.ActiveCfg = Debug|x64
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Debug|x64.Build.0 = Debug|x64
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Release|Win32.ActiveCfg = Release|Win32
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Release|Win32.Build.0 = Release|Win32
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Release|x64.ActiveCfg = Release|x64
+		{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal

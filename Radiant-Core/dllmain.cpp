@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "MinHook.h"
 #include "../Radiant/Logging.h"
+#include "../SDK/SDK.h"
 
 #pragma comment(lib, "MinHook.x64.lib")
 
@@ -26,7 +27,7 @@ void StartCore(HMODULE hMod)
     } else Logging::Info("MinHook Initialized");
 
     init = true;
-
+    
     Logging::Info("Radiant-Core Initialized");
     
 }
