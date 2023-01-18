@@ -11,4 +11,7 @@ namespace Patterns
     static const char* GWorldSig = "0F 2E ? 74 ? 48 8B 1D ? ? ? ? 48 85 DB 74";
     
     static const char* ProcessEventSig = "75 0E ? ? ? 48 ? ? 48 ? ? E8 ? ? ? ? 48 8B ? 24 ? 48 8B ? 24 38 48 8B ? 24 40";
+    static const char* StaticLoadObjectSig = "48 8B C8 89 5C 24 20 E8 ? ? ? ? 48";
+    
+    
 }

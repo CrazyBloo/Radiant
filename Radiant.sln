@@ -4,7 +4,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Radiant", "Radiant\Radiant.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Radiant-Core", "Radiant-Core\Radiant-Core.vcxproj", "{024E9434-812B-4F22-B919-B883C2B39317}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDK", "SDK\SDK.vcxproj", "{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ITR", "ITR\ITR.vcxproj", "{2A3D19DF-7AE7-4C53-9B38-21AF964315DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

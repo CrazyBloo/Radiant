@@ -4,10 +4,14 @@
 #include <filesystem>
 #include <fstream>
 
+
+
 namespace Utils
 {
-    size_t cSize = 260;
-    std::wstring wc( cSize, L'#' );
+    //size_t cSize = 260;
+    //std::wstring wc( cSize, L'#' );
+    
+    const char* dllName = "Radiant-Core.dll";
     
     DWORD GetProcId()
     {
@@ -56,8 +60,9 @@ namespace Utils
             //Allocate memory in game process
             void* loc = VirtualAllocEx(hProc, 0, MAX_PATH, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-            const char* dllCombined = (_GetCurrentDirectory() + "\\Radiant-Core.dll").c_str();
-        
+            //dllCombined = CurrentDirectory/Radiant-Core.dll
+            const char* dllCombined = (_GetCurrentDirectory() + "\\" + std::string(dllName)).c_str();
+            
             //Write the path to our dll to the memory reserved in the game process
             if (loc)
             {

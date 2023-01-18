@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "../Radiant/Logging.h"
-#include "../SDK/SDK.h"
+#include "../ITR/SDK.h"
 
 namespace Hooks
 {

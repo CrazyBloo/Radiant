@@ -1,0 +1,51 @@
+﻿/**
+ * Name: Into_The_Radius_VR
+ * Version: 2.5.1
+ */
+
+#include "pch.h"
+
+namespace CG
+{
+	// --------------------------------------------------
+	// # Structs Functions
+	// --------------------------------------------------
+	/**
+	 * Function:
+	 * 		RVA    -> 0x00000000
+	 * 		Name   -> PredefinedFunction UActorSequence.StaticClass
+	 * 		Flags  -> (Predefined, Static)
+	 */
+	UClass* UActorSequence::StaticClass()
+	{
+		static UClass* ptr = UObject::FindClass("Class ActorSequence.ActorSequence");
+		return ptr;
+	}
+
+	/**
+	 * Function:
+	 * 		RVA    -> 0x00000000
+	 * 		Name   -> PredefinedFunction UActorSequenceComponent.StaticClass
+	 * 		Flags  -> (Predefined, Static)
+	 */
+	UClass* UActorSequenceComponent::StaticClass()
+	{
+		static UClass* ptr = UObject::FindClass("Class ActorSequence.ActorSequenceComponent");
+		return ptr;
+	}
+
+	/**
+	 * Function:
+	 * 		RVA    -> 0x00000000
+	 * 		Name   -> PredefinedFunction UActorSequencePlayer.StaticClass
+	 * 		Flags  -> (Predefined, Static)
+	 */
+	UClass* UActorSequencePlayer::StaticClass()
+	{
+		static UClass* ptr = UObject::FindClass("Class ActorSequence.ActorSequencePlayer");
+		return ptr;
+	}
+
+}
+
+

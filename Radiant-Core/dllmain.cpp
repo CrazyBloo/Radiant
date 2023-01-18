@@ -4,7 +4,7 @@
 #include "Hooks.h"
 #include "MinHook.h"
 #include "../Radiant/Logging.h"
-#include "../SDK/SDK.h"
+#include "../ITR/SDK.h"
 #include "Memory.h"
 #include "Patterns.h"
 
@@ -57,7 +57,8 @@ void StartCore(HMODULE hMod)
     auto processEventAddr = Memory::PatternScan(Patterns::ProcessEventSig);
     if (Memory::Hook(processEventAddr, &Hooks::hkProcessEvent,  reinterpret_cast<LPVOID*>(&Hooks::OProcessEvent))) Logging::Info("Hooked Process Event");
 
-
+    auto testreg = CG::UObject::FindObject<CG::UAssetRegistry>("AssetRegistry AssetRegistry.Default__AssetRegistry");
+    if (testreg != nullptr) Logging::Info("Asset registry located");
     
     Logging::Info("Radiant-Core Initialized");
     

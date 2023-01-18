@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include;$(SolutionDir)\SDK\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,9 +177,9 @@
     <ClInclude Include="Patterns.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SDK\SDK.vcxproj">
+    <ProjectReference Include="..\ITR\ITR.vcxproj">
       <Project>{2a3d19df-7ae7-4c53-9b38-21af964315dd}</Project>
-      <Name>SDK</Name>
+      <Name>ITR</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
