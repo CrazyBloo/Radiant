@@ -9,7 +9,7 @@ void Startup()
 {
     
     //Do some inital UI stuff, print welcome message
-    SetWindowTextW(GetConsoleWindow(), L"Radiant v0.0.1");
+    SetWindowTextW(GetConsoleWindow(), L"Radiant v0.1");
     Logging::Info("Radiant, a mod loader for Into the Radius");
     Logging::Info("Searching for game process... (Open your game)");
 

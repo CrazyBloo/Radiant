@@ -55,8 +55,7 @@ public:
     
     static bool Hook(LPVOID pTarget, LPVOID pDetour, LPVOID *ppOriginal)
     {
-        if (MH_CreateHook(pTarget, pDetour, 
-                      reinterpret_cast<LPVOID*>(ppOriginal)) != MH_OK)
+        if (MH_CreateHook(pTarget, pDetour, ppOriginal) != MH_OK)
         {
             Logging::Error("Failed to create hook");
             return false;

@@ -1,3 +1,4 @@
+#include <future>
 #include <stdio.h>
 #include <windows.h>
 
@@ -8,11 +9,13 @@
 #include "Memory.h"
 #include "Patterns.h"
 
+#include "../ITR/SDK/AssetRegistry_Package.cpp"
+
 #pragma comment(lib, "MinHook.x64.lib")
 
 bool init = false;
 
-void InitSdk()
+void StartSdk()
 {
     auto gObjSig = Memory::PatternScan(Patterns::GObjSig);
     auto GObjectOffset = *reinterpret_cast<uint32_t*>(gObjSig + 14);
@@ -26,13 +29,14 @@ void InitSdk()
     auto GWorldOffset = *reinterpret_cast<uint32_t*>(gWorldSig + 8);
     DWORD64 gWorldAddr = (DWORD64)(gWorldSig + 12 + GWorldOffset);
     
-    CG::UObject::GObjects = reinterpret_cast<CG::TUObjectArray*>(gObjAddr + 0x10);
-    CG::FName::GNames = reinterpret_cast<CG::FNamePool*>((DWORD*)gNameAddr);
-    CG::UWorld::GWorld = reinterpret_cast<CG::UWorld**>(gWorldAddr);
+    UObject::GObjects = reinterpret_cast<TUObjectArray*>(gObjAddr + 0x10);
+    FName::GNames = reinterpret_cast<FNamePool*>((DWORD*)gNameAddr);
+    UWorld::GWorld = reinterpret_cast<UWorld**>(gWorldAddr);
 }
 
 void StartCore(HMODULE hMod)
 {
+    
     if (init) return;
     
     //Allocate a console for debugging
@@ -51,14 +55,21 @@ void StartCore(HMODULE hMod)
     init = true;
 
     //Initialize the SDK
-    InitSdk();
+    StartSdk();
     Logging::Info("SDK Initialized");
-    
+
+    //Hook Process Event, this gets called everytime a bluprint function is ran
     auto processEventAddr = Memory::PatternScan(Patterns::ProcessEventSig);
     if (Memory::Hook(processEventAddr, &Hooks::hkProcessEvent,  reinterpret_cast<LPVOID*>(&Hooks::OProcessEvent))) Logging::Info("Hooked Process Event");
 
-    auto testreg = CG::UObject::FindObject<CG::UAssetRegistry>("AssetRegistry AssetRegistry.Default__AssetRegistry");
-    if (testreg != nullptr) Logging::Info("Asset registry located");
+    //Hook Engine Tick, called every frame
+    auto engineTickAddr = Memory::PatternScan(Patterns::EngineTickSig);
+    if (Memory::Hook(engineTickAddr, &Hooks::hkEngineTick,  reinterpret_cast<LPVOID*>(&Hooks::OEngineTick))) Logging::Info("Hooked Engine Tick");
+
+    //Scan for StaticLoadObject, we use this to load custom assets
+    auto staticLoadObjectAddr = Memory::PatternScan(Patterns::StaticLoadObjectSig);
+    staticLoadObjectAddr += 0x7;
+    Hooks::StaticLoadObjectAddr = (DWORD64)Memory::GetAddressPTR(staticLoadObjectAddr, 0x1, 0x5);
     
     Logging::Info("Radiant-Core Initialized");
     
@@ -72,6 +83,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
     case DLL_THREAD_ATTACH:
         StartCore(hModule);
+        
     case DLL_THREAD_DETACH:
         break;
     }
