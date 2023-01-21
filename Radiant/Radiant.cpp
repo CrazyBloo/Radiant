@@ -5,6 +5,8 @@
 #include "Utils.h"
 
 DWORD procId = 0;
+bool injected = false;
+
 void Startup()
 {
     
@@ -27,7 +29,7 @@ void Startup()
 
     if (Utils::Inject(procId)) Logging::Info("Injecting complete");
     else Logging::Error("Injection failed");
-    
+    injected = true;
 }
 
 
@@ -39,7 +41,12 @@ int main(int argc, char* argv[])
     //This should be fine for now
     while (true)
     {
-        
+        if (injected)
+        {
+            Logging::Info("Radiant-Core Loaded! This window will close...");
+            Sleep(2500);
+            return(0);
+        }
     }
     
     return 0;

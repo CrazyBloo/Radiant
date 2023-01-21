@@ -7,8 +7,9 @@
 #include "../Radiant/Logging.h"
 #include "../ITR/SDK.h"
 #include "Memory.h"
-#include "Patterns.h"
 
+#include "Patterns.h"
+#include "SharedData.h"
 #include "../ITR/SDK/AssetRegistry_Package.cpp"
 
 #pragma comment(lib, "MinHook.x64.lib")
@@ -70,6 +71,11 @@ void StartCore(HMODULE hMod)
     auto staticLoadObjectAddr = Memory::PatternScan(Patterns::StaticLoadObjectSig);
     staticLoadObjectAddr += 0x7;
     Hooks::StaticLoadObjectAddr = (DWORD64)Memory::GetAddressPTR(staticLoadObjectAddr, 0x1, 0x5);
+    
+    //Scan for CallFunctionByName to call OnModLoaded for our mod blueprint
+    auto callFunctionAddr = Memory::PatternScan(Patterns::CallFunctionByName);
+    callFunctionAddr += 0x2;
+    SharedData::CallFunctionAddress = (DWORD64)Memory::GetAddressPTR(callFunctionAddr, 0x1, 0x5);
     
     Logging::Info("Radiant-Core Initialized");
     

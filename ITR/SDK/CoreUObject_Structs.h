@@ -886,6 +886,10 @@ namespace CG
 		struct FVector                                             Scale3D;                                                 // 0x0020(0x000C) Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic
 		unsigned char                                              UnknownData_2M7L[0x4];                                   // 0x002C(0x0004) MISSED OFFSET (PADDING)
 
+		inline FTransform()
+			: Rotation(FQuat{0, 0, 0, 0}), Translation(FVector{0, 0, 0}), Scale3D(FVector::FVector{1, 1, 1}), UnknownData_HHIP(""), UnknownData_2M7L("")
+		{ }
+		
 	public:
 		FMatrix ToMatrixWithScale() const;
 	};

@@ -8,6 +8,9 @@
 #include <vector>
 #include <string>
 
+#include "../Radiant/Logging.h"
+#include "MinHook.h"
+
 class Memory
 {
 private:

@@ -5,6 +5,8 @@
 
 #include "pch.h"
 
+#include "../../Radiant-Core/SharedData.h"
+
 namespace CG
 {
 	// --------------------------------------------------
@@ -1254,6 +1256,11 @@ namespace CG
 	{
 		static UClass* ptr = UObject::FindClass("Class CoreUObject.Struct");
 		return ptr;
+	}
+
+	bool UObject::CallFunctionByNameWithArguments(const wchar_t* Str, void* Ar, UObject* Executor, bool bForceCallWithNonExec)
+	{
+		return reinterpret_cast<bool (*)(UObject*, const wchar_t*, void*, UObject*, bool)>(SharedData::CallFunctionAddress)(this, Str, Ar, Executor, bForceCallWithNonExec);
 	}
 
 	/**

@@ -111,6 +111,7 @@ namespace CG
 		bool IsA(UClass* cmp) const;
 		void ExecuteUbergraph(int32_t EntryPoint);
 		void ProcessEvent(class UFunction* function, void* parms);
+		bool CallFunctionByNameWithArguments(const wchar_t* Str, void* Ar, UObject* Executor, bool bForceCallWithNonExec);
 		static UClass* StaticClass();
 	};
 
