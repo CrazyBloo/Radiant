@@ -13,7 +13,7 @@ Create a new Blueprint Project called IntoTheRadius (it must be called IntoTheRa
 
 ![image](https://user-images.githubusercontent.com/16051822/213894660-69d3e01e-4ecc-4b35-991e-f53914badb25.png)
 
-Create a new folder for your mod make the name of this folder the name of your mod, and inside make a new blueprint actor called ModActor.
+Create a new folder, make the name of this folder the name of your mod, and inside make a new blueprint actor called ModActor.
 
 ![modactor](https://user-images.githubusercontent.com/16051822/213894844-1ba7b999-9b97-4b68-9dd3-73fa4d8e7941.png)
 
