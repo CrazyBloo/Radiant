@@ -9,11 +9,10 @@ bool injected = false;
 
 void Startup()
 {
-    
     //Do some inital UI stuff, print welcome message
     SetWindowTextW(GetConsoleWindow(), L"Radiant v0.1");
-    Logging::Info("Radiant, a mod loader for Into the Radius");
-    Logging::Info("Searching for game process... (Open your game)");
+    Logging::Info("Radiant, a mod loader for Into the Radius", false);
+    Logging::Info("Searching for game process... (Open your game)", false);
 
     //Search for game process at intervals of 100ms
     while (procId == 0)
@@ -22,14 +21,18 @@ void Startup()
         Sleep(100);
     }
 
-    Logging::Info("Found Game! Injecting...");
+    Logging::Info("Found Game! Injecting...", false);
     
     //We sleep for a while here because we don't want to inject right at game startup
     Sleep(5000);
 
-    if (Utils::Inject(procId)) Logging::Info("Injecting complete");
-    else Logging::Error("Injection failed");
-    injected = true;
+    if (Utils::Inject(procId)) 
+    {
+        Logging::Info("Injecting complete", false);
+        injected = true;
+    }
+    else Logging::Error("Injection failed", false);
+    
 }
 
 
@@ -43,7 +46,7 @@ int main(int argc, char* argv[])
     {
         if (injected)
         {
-            Logging::Info("Radiant-Core Loaded! This window will close...");
+            Logging::Info("Radiant-Core Loaded! This window will close...", false);
             Sleep(2500);
             return(0);
         }

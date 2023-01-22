@@ -15,6 +15,9 @@ namespace Hooks
     DWORD64 SpawnActorAddress;
 
     DWORD64 CallFunctionAddr;
+
+    std::vector<std::wstring> modNames;
+    std::vector<AActor*> modActors;
     
     bool CallFunctionByNameWithArguments(UObject* obj, const wchar_t* Str, void* Ar, UObject* Executor, bool bForceCallWithNonExec)
     {
@@ -56,39 +59,48 @@ namespace Hooks
     {
         if (!loadedAssets)
         {
+
+            //End line here to seperate the OVR plugin debug output
+            if (tickCount == 0) printf("\n");
+            
             tickCount++;
 
             //We wait some ticks here so we dont load right at startup
             if (tickCount >= 200)
             {
-                auto testobj = LoadClassFromPath(L"/Game/Radiant-Mod.Radiant-Mod_C");
-                if (testobj != nullptr)
+                for (auto mod_name : modNames)
                 {
+                    auto modclassname = std::wstring(L"/Game/").append(mod_name).append(L"/ModActor.ModActor_C");
+                    auto modclass = LoadClassFromPath(modclassname.c_str());
 
-                    printf("\n");
-                    
-                    Logging::Info("Loaded Asset : " + testobj->GetFullName());
-                    auto gworld = *UWorld::GWorld;
-
-                    FTransform spawnTransform = FTransform();
-
-                    auto gameplayStats = UObject::FindObject<UGameplayStatics>("GameplayStatics Engine.Default__GameplayStatics");
-
-                    auto testactor = gameplayStats->BeginSpawningActorFromClass(gworld, testobj, spawnTransform, true, NULL);
-                    
-                    if (testactor != nullptr)
+                    if (modclass != nullptr)
                     {
-                        Logging::Info("Spawned object : " + testactor->GetFullName());
-                        if (testactor->CallFunctionByNameWithArguments(L"OnModLoaded", nullptr, NULL, true)) Logging::Info("Called Radiant-Mod : On Mod Loaded");
-                        else Logging::Error("Couldnt call mod loaded");
-                    }
-                    else Logging::Error("Couldnt spawn mod actor");
+                        auto gworld = *UWorld::GWorld;
+                        FTransform spawnTransform = FTransform();
+
+                        auto gameplayStats = UObject::FindObject<UGameplayStatics>("GameplayStatics Engine.Default__GameplayStatics");
+
+                        auto modactor = gameplayStats->BeginSpawningActorFromClass(gworld, modclass, spawnTransform, true, NULL);
                     
+                        if (modactor != nullptr)
+                        {
+                            Logging::Info("Spawned ModActor : " + Logging::ws2s(mod_name));
+                            modActors.push_back(modactor);
+                            if (modactor->CallFunctionByNameWithArguments(L"OnModLoaded", nullptr, NULL, true)) Logging::Info("Called " + Logging::ws2s(mod_name) + " : On Mod Loaded");
+                            else Logging::Error("Couldnt call mod loaded");
+                        } else Logging::Error("Couldn't spawn mod actor");
+                        
+                    } else Logging::Error("Couldn't load mod class");
+                    loadedAssets = true;
                 }
-                else Logging::Info("Couldnt load mod actor");
-                loadedAssets = true;
             }
             
+        } else
+        {
+            for (auto mod_actor : modActors)
+            {
+                mod_actor->CallFunctionByNameWithArguments(L"EngineTick", nullptr, NULL, true);
+            }
         }
         
         

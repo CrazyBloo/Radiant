@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <future>
 #include <stdio.h>
 #include <windows.h>
@@ -11,6 +12,7 @@
 #include "Patterns.h"
 #include "SharedData.h"
 #include "../ITR/SDK/AssetRegistry_Package.cpp"
+#include "../Radiant/Utils.h"
 
 #pragma comment(lib, "MinHook.x64.lib")
 
@@ -39,6 +41,19 @@ void StartCore(HMODULE hMod)
 {
     
     if (init) return;
+
+    //Delete old log file
+    std::filesystem::path logpath {Utils::_GetCurrentDirectory()};
+    for (const auto & entry : std::filesystem::directory_iterator(logpath))
+    {
+        if (!entry.exists() || entry.is_directory()) continue;
+        if (entry.path().filename() == L"Radiant-Log.txt")
+        {
+            remove(entry);
+            break;
+        }
+        
+    }
     
     //Allocate a console for debugging
     AllocConsole();
@@ -76,6 +91,18 @@ void StartCore(HMODULE hMod)
     auto callFunctionAddr = Memory::PatternScan(Patterns::CallFunctionByName);
     callFunctionAddr += 0x2;
     SharedData::CallFunctionAddress = (DWORD64)Memory::GetAddressPTR(callFunctionAddr, 0x1, 0x5);
+
+    //Scan for paks
+    auto modsdir = logpath.parent_path().parent_path().string() + "/Content/Paks/Mods";
+    
+    std::filesystem::create_directory(modsdir);
+    for (const auto & entry : std::filesystem::directory_iterator(modsdir))
+    {
+        if (!entry.exists() || entry.is_directory()) continue;
+        auto filename = entry.path().filename().wstring();
+        filename.erase(filename.cend() - 4, filename.cend());
+        Hooks::modNames.push_back(filename);
+    }
     
     Logging::Info("Radiant-Core Initialized");
     
