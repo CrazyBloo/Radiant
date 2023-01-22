@@ -37,6 +37,6 @@ Now you can package your project, and in your compiled content/paks folder one o
 You MUST rename this to the name of the folder you put your mod actor in earlier so the mod loader can find it,
 my folder was Radiant-Mod so the file will be Radiant-Mod.pak
 
-![image](https://user-images.githubusercontent.com/16051822/213895388-ae8cab95-6893-47e4-b566-02920457daf3.png)
+![image](https://user-images.githubusercontent.com/16051822/213901257-074ea366-5d91-445b-b504-460c4589bfeb.png)
 
 Now in the game's files make a mods folder in the IntoTheRadius/Content/Paks/Mods and place your mod there
