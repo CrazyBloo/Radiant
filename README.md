@@ -39,4 +39,4 @@ my folder was Radiant-Mod so the file will be Radiant-Mod.pak
 
 ![image](https://user-images.githubusercontent.com/16051822/213901257-074ea366-5d91-445b-b504-460c4589bfeb.png)
 
-Now in the game's files make a mods folder in the IntoTheRadius/Content/Paks/Mods and place your mod there
+Now in the game's files make a folder called "Mods" in the IntoTheRadius/Content/Paks/ and place your mod there
