@@ -1,12 +1,8 @@
-# Radiant
-A mod loader for Into The Radius VR
-
-Installation
+Installing Mods
 ============
 
-Place Radiant.exe and Radiant-Core.dll into your root game directory.
-
-![image](https://user-images.githubusercontent.com/16051822/213894582-226182db-95be-445c-9dda-9995799b7112.png)
+Make a folder called "Mods" in the IntoTheRadius/Content/Paks folder and place your mod .pak files in there.
+Open Radiant before launching your game.
 
 Making Mods
 ============
@@ -16,7 +12,7 @@ Create a new Blueprint Project called IntoTheRadius (it must be called IntoTheRa
 
 ![image](https://user-images.githubusercontent.com/16051822/213894660-69d3e01e-4ecc-4b35-991e-f53914badb25.png)
 
-Create a new folder for your mod, and inside make a new blueprint class actor called ModActor.
+Create a new folder for your mod, and inside make a new blueprint actor called ModActor.
 
 ![modactor](https://user-images.githubusercontent.com/16051822/213894844-1ba7b999-9b97-4b68-9dd3-73fa4d8e7941.png)
 
@@ -42,4 +38,4 @@ my folder was Radiant-Mod so the file will be Radiant-Mod.pak
 
 ![image](https://user-images.githubusercontent.com/16051822/213895388-ae8cab95-6893-47e4-b566-02920457daf3.png)
 
-You can now place this into the games Content/Paks folder and run Radiant.
+Now in the game's files make a mods folder in the IntoTheRadius/Content/Paks/Mods and place your mod there
