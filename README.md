@@ -30,6 +30,9 @@ Now in Project Settings, click Packaging on the left and enable Generate Chunks
 ![image](https://user-images.githubusercontent.com/16051822/213895219-56fc867e-1b18-4138-92b3-826fb00c69e7.png)
 
 Select all assets required by your mod (unless they are dummy bp's) and Right Click->Asset Actions->Assign to chunk and assign them to a number you'll remember.
+
+![image](https://user-images.githubusercontent.com/16051822/213901326-33cd7982-e47c-48d5-a394-71341f8eac60.png)
+
 Now you can package your project, and in your compiled content/paks folder one of the .pak files names will have your chunk number in it.
 
 ![image](https://user-images.githubusercontent.com/16051822/213895329-078fea28-efee-4316-a5e6-45131d89087d.png)
