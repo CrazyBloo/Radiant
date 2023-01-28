@@ -11,7 +11,6 @@
 
 #include "Patterns.h"
 #include "SharedData.h"
-#include "../ITR/SDK/AssetRegistry_Package.cpp"
 #include "../Radiant/Utils.h"
 
 #pragma comment(lib, "MinHook.x64.lib")
@@ -75,8 +74,10 @@ void StartCore(HMODULE hMod)
     Logging::Info("SDK Initialized");
 
     //Hook Process Event, this gets called everytime a bluprint function is ran
-    auto processEventAddr = Memory::PatternScan(Patterns::ProcessEventSig);
-    if (Memory::Hook(processEventAddr, &Hooks::hkProcessEvent,  reinterpret_cast<LPVOID*>(&Hooks::OProcessEvent))) Logging::Info("Hooked Process Event");
+    auto processFuncAddr = Memory::PatternScan(Patterns::ProcessFunctionSig);
+    auto ProcessFuncOffset = *reinterpret_cast<uint32_t*>(processFuncAddr + 16);
+    auto realProcessFuncAddy = (processFuncAddr + 20 + ProcessFuncOffset);
+    if (Memory::Hook(realProcessFuncAddy, &Hooks::hkProcessFunction,  reinterpret_cast<LPVOID*>(&Hooks::OProcessFunction))) Logging::Info("Hooked Process Function");
 
     //Hook Engine Tick, called every frame
     auto engineTickAddr = Memory::PatternScan(Patterns::EngineTickSig);

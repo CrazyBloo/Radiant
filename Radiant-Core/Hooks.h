@@ -3,6 +3,7 @@
 #include "Memory.h"
 #include "../Radiant/Logging.h"
 #include "../ITR/SDK.h"
+#include "../ITR/SDK/VRExpansionPlugin_Package.cpp"
 
 using namespace CG;
 
@@ -18,6 +19,8 @@ namespace Hooks
 
     std::vector<std::wstring> modNames;
     std::vector<AActor*> modActors;
+
+    UReplicatedVRCameraComponent* GCamera;
     
     bool CallFunctionByNameWithArguments(UObject* obj, const wchar_t* Str, void* Ar, UObject* Executor, bool bForceCallWithNonExec)
     {
@@ -36,14 +39,82 @@ namespace Hooks
 
 #pragma endregion 
 
-#pragma region Process Event Hook
+#pragma region Process Function Hook
 
-    typedef void (__thiscall *tProcessEvent)(UObject*, UFunction*, void*);
-    tProcessEvent OProcessEvent = nullptr;
+    typedef void (*tProcessFunction)(UObject*, FFrame*, void*);
+    tProcessFunction OProcessFunction;
 
-    void hkProcessEvent(UObject* pCallObject, UFunction* pUFunc, void* pParms)
+    struct DebugLogParms
     {
-        OProcessEvent(pCallObject, pUFunc, pParms);
+        FString OutString;
+    };
+
+    UFunction* GetCameraPosFunc;
+    UFunction* GetCameraRotFunc;
+    UFunction* GetModMenuNamesFunc;
+    
+    struct GetCameraPositionParms
+    {
+        FVector OutputVec;
+    };
+
+    struct GetCameraRotationParms
+    {
+        FRotator OutputRot;
+    };
+
+    struct GetModMenuListParms
+    {
+        FString OutName;
+        UClass* widgetClass;
+    };
+    
+    void hkProcessFunction(UObject* contextObj, FFrame* pFunc, void* pPtr)
+    {
+        if (pFunc->Node->GetName() == "RD-GetCameraPosition")
+        {
+            GetCameraPositionParms posParms;
+            GetCameraRotationParms rotParms;
+            
+            if (GCamera != nullptr)
+            {
+                posParms.OutputVec = GCamera->K2_GetComponentLocation();
+                rotParms.OutputRot = GCamera->K2_GetComponentRotation();
+            }
+
+            if (GetCameraPosFunc && GetCameraRotFunc)
+            {
+                contextObj->ProcessEvent(GetCameraPosFunc, &posParms);
+                contextObj->ProcessEvent(GetCameraRotFunc, &rotParms);
+            } else Logging::Error("Couldn't find Radiant-Mod to initialize Mod Menu");
+            
+        }
+
+        if (pFunc->Node->GetName() == "RD-GetModMenuList")
+        {
+            for (auto mod_name : modNames)
+            {
+                auto modconfigname = std::wstring(L"/Game/").append(mod_name).append(L"/ModConfig.ModConfig_C");
+                auto modconfig = LoadClassFromPath(modconfigname.c_str());
+
+                if (modconfig != nullptr)
+                {
+                    GetModMenuListParms nameParms;
+                    nameParms.OutName = FString{mod_name.c_str()};
+                    nameParms.widgetClass = modconfig;
+                    contextObj->ProcessEvent(GetModMenuNamesFunc, &nameParms);
+                }
+            }
+        }
+
+        if (pFunc->Node->GetName() == "RD-PrintToModLoader")
+        {
+            auto outString = pFunc->GetInputParams<DebugLogParms>();
+            Logging::Info(outString->OutString.ToString());
+        }
+
+        return OProcessFunction(contextObj, pFunc, pPtr);
+        
     }
 
 #pragma endregion 
@@ -52,19 +123,33 @@ namespace Hooks
     
     typedef void (__thiscall *tEngineTick)(UGameEngine*, float, bool);
     tEngineTick OEngineTick = nullptr;
-
+    
     int tickCount;
     bool loadedAssets;
+    bool foundPlayer;
     void hkEngineTick(UGameEngine* self, float unk_float, bool unk_bool)
     {
+
+        if (!foundPlayer)
+        {
+            tickCount++;
+
+            if (tickCount >= 600)
+            {
+                GCamera = UObject::FindObject<UReplicatedVRCameraComponent>("ReplicatedVRCameraComponent L_Common.L_Common.PersistentLevel.RadiusPlayerCharacter.VR Replicated Camera");
+                GetCameraPosFunc = UObject::FindObject<UFunction>("Function ModActor.ModActor_C.GetCameraPos");
+                GetCameraRotFunc = UObject::FindObject<UFunction>("Function ModActor.ModActor_C.GetCameraRot");
+                GetModMenuNamesFunc = UObject::FindObject<UFunction>("Function ModActor.ModActor_C.GetModMenuNames");
+                foundPlayer = true;
+            }
+            
+        }
+        
         if (!loadedAssets)
         {
-
             //End line here to seperate the OVR plugin debug output
             if (tickCount == 0) printf("\n");
             
-            tickCount++;
-
             //We wait some ticks here so we dont load right at startup
             if (tickCount >= 200)
             {
@@ -88,6 +173,10 @@ namespace Hooks
                             modActors.push_back(modactor);
                             if (modactor->CallFunctionByNameWithArguments(L"OnModLoaded", nullptr, NULL, true)) Logging::Info("Called " + Logging::ws2s(mod_name) + " : On Mod Loaded");
                             else Logging::Error("Couldnt call mod loaded");
+
+                            
+
+                            
                         } else Logging::Error("Couldn't spawn mod actor");
                         
                     } else Logging::Error("Couldn't load mod class");
@@ -101,6 +190,9 @@ namespace Hooks
             {
                 mod_actor->CallFunctionByNameWithArguments(L"EngineTick", nullptr, NULL, true);
             }
+
+            
+            
         }
         
         

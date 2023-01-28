@@ -34,7 +34,7 @@ namespace CG
 			_count = 0;
 			_max = 0;
 		}
-
+		
 		T* Data() const
 		{
 			return _data;

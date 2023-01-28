@@ -315,7 +315,7 @@ namespace CG
 		void SetDamageCauserName(class UDamageType* LastDamageType, class AController* LastDamageInstigator, class AActor* LastDamageCauser);
 		void UpdateLefthanded();
 		void UpdateMarkers();
-		void GetArmorFootStepNoiseBonus(float* );
+		void GetArmorFootStepNoiseBonus();
 		class UCameraComponent* GetCameraRef();
 		void GetCurrentVelocity(struct FVector* Velocity);
 		void IsHoldingActor(class UGripMotionControllerComponent* Controller, class AActor* Actor, bool* holding);

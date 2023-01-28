@@ -1656,7 +1656,7 @@ namespace CG
 	 * Parameters:
 	 * 		float                                                                                                         (Parm, OutParm, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
 	 */
-	void ABP_PRPlayerCharacter_IKv4_C::GetArmorFootStepNoiseBonus(float* )
+	void ABP_PRPlayerCharacter_IKv4_C::GetArmorFootStepNoiseBonus()
 	{
 		static UFunction* fn = UObject::FindObject<UFunction>("Function BP_PRPlayerCharacter_IKv4.BP_PRPlayerCharacter_IKv4_C.GetArmor FootStepNoiseBonus");
 		
@@ -1665,9 +1665,6 @@ namespace CG
 		auto flags = fn->FunctionFlags;
 		UObject::ProcessEvent(fn, &params);
 		fn->FunctionFlags = flags;
-		
-		if ( != nullptr)
-			* = params.;
 	}
 
 	/**

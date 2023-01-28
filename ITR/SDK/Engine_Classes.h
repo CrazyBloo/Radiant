@@ -5,6 +5,9 @@
  * Version: 2.5.1
  */
 
+
+#include "../Radiant-Core/SharedData.h"
+
 #ifdef _MSC_VER
 	#pragma pack(push, 0x01)
 #endif
@@ -11027,6 +11030,31 @@ class UCanvas : public UObject
 	{
 	public:
 		static UClass* StaticClass();
+	};
+
+	class FOutParmRec
+	{
+	public:
+		UProperty* Property; //0x0000 
+		void* PropAddr; //0x0008 
+		FOutParmRec* NextOutParm; //0x0010 
+
+	}; //Size=0x0018
+
+	
+	class FFrame
+	{
+	public:
+		char pad_0x0000[0x10]; //0x0000
+		UFunction* Node; //0x0010 
+		UObject* Object; //0x0018 
+		uint8_t* Code; //0x0020 
+		uint8_t* Locals; //0x0028
+		char pad_0x0030[0x48]; //0x0030
+		FOutParmRec* OutParms; //0x007
+		
+		template<typename T>
+		T* GetInputParams() { return (T*)Locals; }
 	};
 
 	/**

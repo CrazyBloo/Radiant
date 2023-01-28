@@ -395,6 +395,7 @@ namespace CG
 		unsigned char                                              UnknownData_0RAP[0x40];                                  // 0x0030(0x0040) MISSED OFFSET (PADDING)
 
 	public:
+		UField* GetParentUProperty() { return (UField*)this; }
 		static UClass* StaticClass();
 	};
 
